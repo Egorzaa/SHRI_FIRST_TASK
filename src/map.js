@@ -22,8 +22,34 @@ export function initMap(ymaps, containerId) {
   objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
 
   loadList().then(data => {
-    objectManager.add(data);
+    console.log(data);
+    // objectManager.add(data);
+    // ymaps.geoQuery(data).addToMap(myMap);
+    data.features.forEach(function(element) {
+      element.geometry.coordinates.reverse();    
+    });
+    console.log(data.features);
+    var result = ymaps.geoQuery(data);
+    result.addToMap(myMap);
+    myMap.geoObjects.add(result.search('geometry.type == "Point"').clusterize());
+    
+    console.log(result);
   });
+
+  // console.log(objectManager);
+
+  // var myPlacemark = new ymaps.Placemark([55.76, 37.64], {
+  //   // Хинт показывается при наведении мышкой на иконку метки.
+  //   hintContent: 'Содержимое всплывающей подсказки',
+  //   // Балун откроется при клике по метке.
+  //   balloonContent: 'Содержимое балуна'
+  // });
+
+  // // После того как метка была создана, ее
+  // // можно добавить на карту.
+  // myMap.geoObjects.add(myPlacemark);
+  // console.log(myMap);
+  // // myMap.geoObjects.add(objectManager);
 
   // details
   objectManager.objects.events.add('click', event => {
