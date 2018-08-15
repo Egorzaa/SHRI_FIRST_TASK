@@ -5,18 +5,18 @@ import { createFilterControl } from './filter';
 export function initMap(ymaps, containerId) {
   const myMap = new ymaps.Map(containerId, {
     center: [55.76, 37.64],
-    controls: [],
+    controls: ["zoomControl"],
     zoom: 10
   });
 
   const objectManager = new ymaps.ObjectManager({
     clusterize: true,
     gridSize: 64,
-    clusterIconLayout: 'default#pieChart',
-    clusterDisableClickZoom: false,
+    clusterIconLayout: 'default#pieChart', //diagram on cluster
+    clusterDisableClickZoom: false,  //cluster will not zoom up on click
     geoObjectOpenBalloonOnClick: false,
     geoObjectHideIconOnBalloonOpen: false,
-    geoObjectBalloonContentLayout: getDetailsContentLayout(ymaps)
+    geoObjectBalloonContentLayout: getDetailsContentLayout(ymaps) //not in docs
   });
 
   objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');

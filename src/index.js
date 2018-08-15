@@ -1,4 +1,4 @@
-import initMap from "./map";
+import {initMap} from "./map";
 
 ymaps.ready(() => {
   initMap(ymaps, "map");
