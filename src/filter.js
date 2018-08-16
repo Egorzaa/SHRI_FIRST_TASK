@@ -9,7 +9,7 @@ export function createFilterControl(ymaps) {
         state: { selected: true }
       })
   );
-
+  console.log(items);
   const listBoxControl = new ymaps.control.ListBox({
     data: { content: 'Filter by state', title: 'Filter by state' },
     items: items,
@@ -20,6 +20,7 @@ export function createFilterControl(ymaps) {
       }, {})
     }
   });
+  console.log(listBoxControl);
 
   listBoxControl.events.add(['select', 'deselect'], event => {
     var item = event.get('target');
@@ -27,6 +28,7 @@ export function createFilterControl(ymaps) {
     filters[item.data.get('value')] = item.isSelected();
     listBoxControl.state.set('filters', filters);
   });
+  
 
   return listBoxControl;
 }

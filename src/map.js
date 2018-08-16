@@ -9,7 +9,7 @@ export function initMap(ymaps, containerId) {
     zoom: 10
   });
 
-  const objectManager = new ymaps.ObjectManager({
+  const myobjectManager = new ymaps.ObjectManager({
     clusterize: true,
     gridSize: 64,
     clusterIconLayout: 'default#pieChart', //diagram on cluster
@@ -18,22 +18,24 @@ export function initMap(ymaps, containerId) {
     geoObjectHideIconOnBalloonOpen: false,
     geoObjectBalloonContentLayout: getDetailsContentLayout(ymaps) //not in docs
   });
+  myMap.geoObjects.add(myobjectManager);
 
-  objectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
+  myobjectManager.clusters.options.set('preset', 'islands#greenClusterIcons');
 
   loadList().then(data => {
     console.log(data);
-    // objectManager.add(data);
-    // ymaps.geoQuery(data).addToMap(myMap);
+    
+    // ymaps.geoQuery(data).addToMap(myMap);      
     data.features.forEach(function(element) {
       element.geometry.coordinates.reverse();    
     });
-    console.log(data.features);
-    var result = ymaps.geoQuery(data);
-    result.addToMap(myMap);
-    myMap.geoObjects.add(result.search('geometry.type == "Point"').clusterize());
+    myobjectManager.add(data);
+    // console.log(data.features);
+    // var result = ymaps.geoQuery(data);
+    // result.addToMap(myMap);
+    // myMap.geoObjects.add(result.search('geometry.type == "Point"').clusterize());
     
-    console.log(result);
+    // console.log(result);
   });
 
   // console.log(objectManager);
@@ -52,16 +54,16 @@ export function initMap(ymaps, containerId) {
   // // myMap.geoObjects.add(objectManager);
 
   // details
-  objectManager.objects.events.add('click', event => {
+  myobjectManager.objects.events.add('click', event => {
     const objectId = event.get('objectId');
-    const obj = objectManager.objects.getById(objectId);
+    const obj = myobjectManager.objects.getById(objectId);
 
-    objectManager.objects.balloon.open(objectId);
+    myobjectManager.objects.balloon.open(objectId);
 
     if (!obj.properties.details) {
       loadDetails(objectId).then(data => {
         obj.properties.details = data;
-        objectManager.objects.balloon.setData(obj);
+        myobjectManager.objects.balloon.setData(obj);
       });
     }
   });
@@ -72,7 +74,7 @@ export function initMap(ymaps, containerId) {
 
   var filterMonitor = new ymaps.Monitor(listBoxControl.state);
   filterMonitor.add('filters', filters => {
-    objectManager.setFilter(
+    myobjectManager.setFilter(
       obj => filters[obj.isActive ? 'active' : 'defective']
     );
   });
