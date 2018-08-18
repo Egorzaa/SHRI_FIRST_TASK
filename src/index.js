@@ -1,3 +1,4 @@
+"use strict";
 import {initMap} from "./map";
 
 ymaps.ready(() => {

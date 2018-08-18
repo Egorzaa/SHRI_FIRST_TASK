@@ -1,6 +1,7 @@
 import { createChart } from './chart';
 
 export function getDetailsContentLayout(ymaps) {
+  
   const BalloonContentLayout = ymaps.templateLayoutFactory.createClass(
     `<div class="details-info">
         {% if (properties.details) %}
@@ -31,10 +32,10 @@ export function getDetailsContentLayout(ymaps) {
         BalloonContentLayout.superclass.build.call(this);
 
         const { details } = this.getData().object.properties;
-
+        console.log("hi");
         if (details) {
           const container = this.getElement().querySelector('.details-chart');
-
+          console.log("hi");
           this.connectionChart = createChart(
             container,
             details.chart,
